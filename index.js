@@ -8,18 +8,18 @@ const fetch = require('node-fetch');
 
 
 
-// grab('http://mangabz.com/242bz/', {
-// 	name: '篮球少年王',
-// 	target: '.detail-list-item a',
-// 	host: 'http://mangabz.com/'
-// }, (res) => {
-// 	const text = res.split('eval(')[1].split(')\n')[0];
-// 	eval('global.func = ' + text);
-// 	eval(global.func);
-// 	return [
-// 		newImgs
-// 	];
-// })
+grab('http://mangabz.com/242bz/', {
+	name: '篮球少年王',
+	target: '.detail-list-item a',
+	host: 'http://mangabz.com/'
+}, (res) => {
+	const text = res.split('eval(')[1].split(')\n')[0];
+	eval('global.func = ' + text);
+	eval(global.func);
+	return [
+		newImgs
+	];
+})
 
 
 // grab('https://www.77mh.cc/colist_110020.html', {

@@ -13,6 +13,7 @@ const grap = async (url, options = {}, transform) => {
         timeout: 5000,
         headers: {
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1",
+            ...options.headers
         }
     })
     .then(async (res) => (options.encoding ? await res.text() : await res.buffer()))
@@ -22,7 +23,6 @@ const grap = async (url, options = {}, transform) => {
     });
     !options.encoding && (html = Iconv.decode(html, 'gb2312'))
     const $ = cheerio.load(html);
-    console.log(options.urlReplace, options.titleReplace)
     const urls = $(options.target).toArray().map(item => {
         let url = `${options.host}${$(item).attr('href')}`;
         let title = $(item).text().trim();
@@ -35,7 +35,7 @@ const grap = async (url, options = {}, transform) => {
 } 
 
 const downloadImages = async (urls, options = {}, transform) => {
-    options = Object.assign({imageHost: '', headers: {} }, options)
+    options = Object.assign({imageHost: '', headers: {}, downloadOptions: {} }, options)
 	for(const item of urls){
         let url, title, result;
         if(typeof item === "object"){
@@ -72,13 +72,13 @@ const downloadImages = async (urls, options = {}, transform) => {
             for(let src of imgs){
                 arr.push({
                     url: `${options.imageHost}${src}`,
-                    path: `../${options.name}/${fileName}/`,
+                    path: `${options.name}/${fileName}/`,
                     fileName: i,
-                    extract: options.extract
+                    extract: options.downloadOptions.extract
                 })
                 i++;
             }
-            await download(arr, {title: fileName, parallel: options.parallel})
+            await download(arr, {title: fileName, ...options.downloadOptions})
         }else{
             log('请求出错', result)
         }
