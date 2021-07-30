@@ -1,0 +1,8 @@
+.DS_Store
+.AppleDouble
+.LSOverride
+node_modules/
+logs/*.log
+.vscode/
+*.rdb
+dump.rdb

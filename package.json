@@ -1,0 +1,37 @@
+{
+  "name": "nobita",
+  "version": "1.0.0",
+  "description": "Nobita",
+  "main": "app.js",
+  "dependencies": {
+    "cross-env": "^5.0.0",
+    "download": "^8.0.0",
+    "node-fetch": "^2.6.1",
+    "iconv-lite": "0.6.3",
+    "cheerio": "1.0.0-rc.10",
+    "debug": "4.3.2"
+  },
+  "scripts": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nobitajs/nobita.git"
+  },
+  "keywords": [
+    "koa",
+    "nobita"
+  ],
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/nobitajs/nobita/issues",
+    "email": "303907720@qq.com"
+  },
+  "author": "JJ",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.11.1"
+  }
+}
