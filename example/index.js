@@ -2,24 +2,21 @@ const grab = require('cartoon-catch');
 const Iconv = require('iconv-lite');
 const base64decode = require('./base64decode');
 const fetch = require('node-fetch');
-// https://www.manhuaren.com/
-// http://mangabz.com/m${id}
-// https://www.soman.com/comic.html?comicname=%E5%A4%A9%E4%B8%8A%E5%A4%A9%E4%B8%8B&source=Xmanhua
 
 
+// grab('http://mangabz.com/242bz/', {
+// 	name: '篮球少年王',
+// 	target: '.detail-list-item a',
+// 	host: 'http://mangabz.com/'
+// }, (res) => {
+// 	const text = res.split('eval(')[1].split(')\n')[0];
+// 	eval('global.func = ' + text);
+// 	eval(global.func);
+// 	return [
+// 		newImgs
+// 	];
+// })
 
-grab('http://mangabz.com/242bz/', {
-	name: '篮球少年王',
-	target: '.detail-list-item a',
-	host: 'http://mangabz.com/'
-}, (res) => {
-	const text = res.split('eval(')[1].split(')\n')[0];
-	eval('global.func = ' + text);
-	eval(global.func);
-	return [
-		newImgs
-	];
-})
 
 // grab('http://www.qiman6.com/16080/', {
 // 	name: '../一人之下',
@@ -75,8 +72,7 @@ grab('http://mangabz.com/242bz/', {
 // 	target: '#chapterList2 a',
 // 	encoding: false,
 // }, (res, url, title) => {
-// 	const text = Iconv.decode(res, 'gb2312');
-// 	const cp = text.split('cp="')[1].split('";')[0];
+// 	const cp = res.split('cp="')[1].split('";')[0];
 // 	const newImgs = eval(eval(base64decode(cp).slice(4)));
 // 	return [newImgs, title];
 // })
