@@ -1,35 +1,30 @@
 {
-  "name": "spider",
+  "name": "cartoon-catch",
   "version": "1.0.0",
-  "description": "spider",
-  "main": "index.js",
+  "description": "cartoon-catch",
+  "main": "lib/main.js",
   "dependencies": {
-    "cross-env": "^5.0.0",
+    "progress": "2.0.3",
     "download": "^8.0.0",
     "node-fetch": "^2.6.1",
     "iconv-lite": "0.6.3",
     "cheerio": "1.0.0-rc.10",
     "debug": "4.3.2"
   },
-  "scripts": {
-
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iamtang/spider"
+    "url": "https://github.com/iamtang/cartoon-catch"
   },
   "keywords": [
-    "spider"
+    "cartoon-catch"
   ],
   "engines": {
     "node": ">=8.0.0"
   },
   "bugs": {
-    "url": "https://github.com/iamtang/spider/issues",
+    "url": "https://github.com/iamtang/cartoon-catch/issues",
     "email": "303907720@qq.com"
   },
   "author": "JJ",
-  "license": "MIT",
-  "devDependencies": {
-  }
+  "license": "MIT"
 }
