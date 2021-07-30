@@ -7,3 +7,4 @@ logs/*.log
 *.rdb
 dump.rdb
 example
+package-lock.json

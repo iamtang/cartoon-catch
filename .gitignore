@@ -6,3 +6,4 @@ logs/*.log
 .vscode/
 *.rdb
 dump.rdb
+package-lock.json
