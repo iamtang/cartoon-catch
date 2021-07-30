@@ -3,7 +3,6 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 var log = require('debug')('debug');
 
-
 let bar = null;
 async function download(images, options = {}){
     const { title = '名称', parallel = 5 } = options;
@@ -41,7 +40,7 @@ function downloadFile(image = {}, options = {}, callback = () => {}){
     let { url, path = '/', fileName = createFileName(), extract = 'jpg' } = image;
     const allPath = `${path}${fileName}.${extract}`;
     if(!url) return callback(allPath, 2);
-    url = url.indexOf('http') === -1 ? `http:${url}` : url;
+    url = url.indexOf('http') !== 0 ? `http:${url}` : url;
     let timer = null;
     if(!fs.existsSync(path)){
         fs.mkdirSync(path, {recursive: true})

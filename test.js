@@ -1,8 +1,5 @@
-const request = require('request-promise');
 const u = require('./u');
-const base64decode = require('./base64decode');
 const download = require('./download');
-const Iconv = require('iconv-lite');
 
 // https://www.manhuaren.com/
 // http://mangabz.com/m${id}

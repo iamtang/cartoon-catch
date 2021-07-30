@@ -5,7 +5,18 @@
 
 ## 实例
 ```js
-grab('需要爬取的漫画url', options, transform(html, url, title){})
+const grab = require('./grab');
+const options = {
+	name: '../漫画名‘,
+	host: 'http://xx.com',
+	target: '.list a'
+}
+
+grab('http://xx.com/m12345', options, function(html, url, title){
+	const img = html.match(/https:\/\/img.xxx.com.*\d+.jpg/g)
+	const title = html.match(/\<strong\>(.*.)\<\/strong\>/);
+	return [imgs, title]
+})
 ```
 ## options 参数
 |参数名|值|是否必填|类型|备注|
@@ -44,3 +55,21 @@ const transform = (html, url, title) => {
 }
 ```
 
+## 其他
+- 如果需要DEBUG，环境变量传入DEBUG=debug
+- 支持爬虫网站如下
+
+|网址|
+|:---|
+|https://www.manhuaren.com|
+|http://mangabz.com|
+|https://www.soman.com|
+|https://m.kuaikanmanhua.com|
+|https://www.77mh.cc|
+|http://m.pufei.org|
+|http://m.ikkdm.com|
+|https://www.kanbl.cc|
+|https://m.36mh.com/|
+|https://m.kuaikanmanhua.com/|
+|http://www.qiman6.com|
+|...|

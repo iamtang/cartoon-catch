@@ -8,18 +8,49 @@ const fetch = require('node-fetch');
 
 
 
-grab('http://mangabz.com/242bz/', {
-	name: '篮球少年王',
-	target: '.detail-list-item a',
-	host: 'http://mangabz.com/'
-}, (res) => {
-	const text = res.split('eval(')[1].split(')\n')[0];
-	eval('global.func = ' + text);
-	eval(global.func);
-	return [
-		newImgs
-	];
-})
+// grab('http://mangabz.com/242bz/', {
+// 	name: '篮球少年王',
+// 	target: '.detail-list-item a',
+// 	host: 'http://mangabz.com/'
+// }, (res) => {
+// 	const text = res.split('eval(')[1].split(')\n')[0];
+// 	eval('global.func = ' + text);
+// 	eval(global.func);
+// 	return [
+// 		newImgs
+// 	];
+// })
+
+// grab('http://www.qiman6.com/16080/', {
+// 	name: '../一人之下',
+// 	target: '#chapter-list1 a',
+// 	host: 'http://www.qiman6.com'
+// }, (res) => {
+// 	const text = res.split('eval(')[1].split(')\n')[0];
+// 	eval('global.func = ' + text);
+// 	eval(global.func);
+// 	return [
+// 		newImgs
+// 	];
+// })
+
+
+// grab('https://m.kuaikanmanhua.com/mobile/2598/list/', {
+// 	name: '篮球少年王',
+// 	target: '#chapters-list a',
+// 	host: 'https://www.kuaikanmanhua.com'
+// }, (res) => {
+// 	console.log();
+// 	const t = res.split('window.__NUXT__=')[1].split('</script>')[0];
+// 	let data = eval(t).data[0];
+// 	let imgs = data.imgList.map(item => item.url);
+// 	let title = data.comicTitle;
+// 	console.log(imgs, '=====imgs======')
+// 	return [
+// 		imgs,
+// 		title
+// 	];
+// })
 
 
 // grab('https://www.77mh.cc/colist_110020.html', {
