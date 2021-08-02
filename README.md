@@ -6,7 +6,7 @@
 
 ## 实例
 ```js
-const grab = require('./grab');
+const grab = require('cartoon-catch');
 const options = {
 	name: '../漫画名‘,
 	host: 'http://xx.com',

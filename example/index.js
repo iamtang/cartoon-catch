@@ -17,6 +17,19 @@ const fetch = require('node-fetch');
 // 	];
 // })
 
+grab('http://m.gugu5.com/o/yirenzhixia/', {
+	name: '../一人之下',
+	target: '#mh-chapter-list-ol-0 a',
+}, (res) => {
+	console.log(res)
+	// const text = res.split('eval(')[1].split(')\n')[0];
+	// eval('global.func = ' + text);
+	// eval(global.func);
+	return [
+		newImgs
+	];
+})
+
 
 // grab('http://www.qiman6.com/16080/', {
 // 	name: '../一人之下',
