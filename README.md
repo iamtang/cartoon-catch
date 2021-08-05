@@ -5,8 +5,8 @@
 如不懂使用，可查看[例子](https://github.com/iamtang/cartoon-catch/blob/master/example/index.js)
 
 ## 实例
-```js
-const grab = require('cartoon-catch');
+```typescript
+import grab from 'cartoon-catch';
 const options = {
 	name: '../漫画名‘,
 	host: 'http://xx.com',

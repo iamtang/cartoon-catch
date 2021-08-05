@@ -1,13 +1,24 @@
-const grab = require('cartoon-catch');
+const { default: grab } = require('../dist/main');
 const Iconv = require('iconv-lite');
 const base64decode = require('./base64decode');
 const fetch = require('node-fetch');
 
+grab('http://mangabz.com/242bz/', {
+	name: '篮球少年王',
+	target: '.detail-list-item a',
+	host: 'http://mangabz.com/'
+}, (res) => {
+	const text = res.split('eval(')[1].split(')\n')[0];
+	eval('global.func = ' + text);
+	eval(global.func);
+	return [
+		newImgs
+	];
+})
 
-// grab('http://mangabz.com/242bz/', {
-// 	name: '篮球少年王',
-// 	target: '.detail-list-item a',
-// 	host: 'http://mangabz.com/'
+// grab('http://m.gugu5.com/o/yirenzhixia/', {
+// 	name: '../一人之下',
+// 	target: '#mh-chapter-list-ol-0 a',
 // }, (res) => {
 // 	const text = res.split('eval(')[1].split(')\n')[0];
 // 	eval('global.func = ' + text);
@@ -16,19 +27,6 @@ const fetch = require('node-fetch');
 // 		newImgs
 // 	];
 // })
-
-grab('http://m.gugu5.com/o/yirenzhixia/', {
-	name: '../一人之下',
-	target: '#mh-chapter-list-ol-0 a',
-}, (res) => {
-	console.log(res)
-	// const text = res.split('eval(')[1].split(')\n')[0];
-	// eval('global.func = ' + text);
-	// eval(global.func);
-	return [
-		newImgs
-	];
-})
 
 
 // grab('http://www.qiman6.com/16080/', {

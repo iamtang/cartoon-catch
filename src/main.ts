@@ -1,13 +1,17 @@
-const cheerio = require('cheerio');
-const fetch = require('node-fetch');
-const Iconv = require('iconv-lite');
-var log = require('debug')('debug');
-const download = require('./download');
 
-const grap = async (url, options = {}, transform) => {
+import cheerio from 'cheerio'
+import * as Iconv from 'iconv-lite'
+import nodeFetch from 'node-fetch'
+import Debug from 'debug'
+import download from './download'
+import { OptionsInterface } from './interface/main.interface';
+
+const log = Debug.debug('debug')
+
+const grap = async (url: string, options: OptionsInterface, transform: Function) => {
     options = Object.assign({host: '', encoding: true }, options)
     if(!options.target) throw new Error('请输入target');
-    let html = await fetch(url, {
+    let html = await nodeFetch(url, {
         method: 'get',
         timeout: 5000,
         headers: {
@@ -16,28 +20,28 @@ const grap = async (url, options = {}, transform) => {
         }
     })
     .then(async (html) => (options.encoding ? await html.text() : await html.buffer()))
-    .then(html => options.encoding ? html : Iconv.decode(html, 'gb2312'))
+    .then((html: any) => options.encoding ? html : Iconv.decode(html, 'gb2312'))
     .catch(e => {
-        log('请求超时', url, e)
+        log(`请求超时 ${url} ${e}`)
         return null
     });
     const $ = cheerio.load(html);
     const urls = $(options.target).toArray().map(item => {
         let url = `${options.host}${$(item).attr('href')}`;
         let title = $(item).text().trim();
-        options.urlReplace && (url = url.replace(...options.urlReplace))
-        options.titleReplace && (title = title.replace(...options.titleReplace))
+        options.urlReplace && (url = url.replace(options.urlReplace[0], options.urlReplace[1]))
+        options.titleReplace && (title = title.replace(options.titleReplace[0], options.titleReplace[1]))
         return [url, title];
     });
     log(urls)
     return downloadImages(urls, options, transform)
 } 
 
-const downloadImages = async (urls, options = {}, transform) => {
+const downloadImages = async (urls, options: OptionsInterface, transform: Function) => {
     options = Object.assign({imageHost: '', headers: {}, downloadOptions: {} }, options)
 	for(const item of urls){
         let url, title, result;
-        if(typeof item === "object"){
+        if(Object.prototype.toString.call(item)== '[object Array]'){
             [url, title] = item;
         }else{
             url = item;
@@ -46,8 +50,8 @@ const downloadImages = async (urls, options = {}, transform) => {
         if (options.beforeFunction) {
             result = await options.beforeFunction(item)
         }else{
-            log('发起请求', url);
-            result = await fetch(url, {
+            // log('发起请求', url);
+            result = await nodeFetch(url, {
                 method: 'get',
                 timeout: 5000,
                 headers: {
@@ -56,7 +60,7 @@ const downloadImages = async (urls, options = {}, transform) => {
                 }
             })
             .then(async (html) => (options.encoding ? await html.text() : await html.buffer()))
-            .then(html => options.encoding ? html : Iconv.decode(html, 'gb2312'))
+            .then((html: any) => options.encoding ? html : Iconv.decode(html, 'gb2312'))
             .catch(e => {
                 log('请求超时', url, e)
                 urls.push(item)
@@ -74,7 +78,7 @@ const downloadImages = async (urls, options = {}, transform) => {
                     url: `${options.imageHost}${src}`,
                     path: `${options.name}/${fileName}/`,
                     fileName: i,
-                    extract: options.downloadOptions.extract
+                    extract: options.extract
                 })
                 i++;
             }
@@ -87,5 +91,4 @@ const downloadImages = async (urls, options = {}, transform) => {
     process.exit(0)
 }
 
-
-module.exports = grap;
+export default grap

@@ -1,14 +1,17 @@
 {
   "name": "cartoon-catch",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "cartoon-catch",
-  "main": "lib/main.js",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "build:watch": "rm -rf dist && tsc -w"
+  },
   "dependencies": {
-    "progress": "2.0.3",
-    "download": "^8.0.0",
-    "node-fetch": "^2.6.1",
     "iconv-lite": "0.6.3",
     "cheerio": "1.0.0-rc.10",
+    "node-fetch": "2.6.1",
+    "progress": "2.0.3",
     "debug": "4.3.2"
   },
   "repository": {
@@ -19,12 +22,21 @@
     "cartoon-catch"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "bugs": {
     "url": "https://github.com/iamtang/cartoon-catch/issues",
     "email": "303907720@qq.com"
   },
   "author": "JJ",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cheerio": "0.22.30",
+    "@types/debug": "4.1.7",
+    "@types/node": "^16.4.12",
+    "@types/node-fetch": "2.5.12",
+    "@types/progress": "2.0.5",
+    "tslib": "^2.3.0",
+    "typescript": "4.3.5"
+  }
 }
