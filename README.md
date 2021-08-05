@@ -6,7 +6,8 @@
 
 ## 实例
 ```typescript
-import grab from 'cartoon-catch';
+// import grab from 'cartoon-catch'; // ts
+const {default: grab} = require('cartoon-catch') // js
 const options = {
 	name: '../漫画名‘,
 	host: 'http://xx.com',
