@@ -21,7 +21,7 @@ const log = debug_1.default.debug('debug');
 let bar = null;
 function download(images, options) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { title = '名称', parallel = 5 } = options;
+        const { title = '名称', parallel = 5 } = options || {};
         const total = images.length;
         bar = new progress_1.default(`${title}(:current/:total): [:bar] [:percent]`, { total: +total, width: 50 });
         let queue = parallel < total ? parallel : total;
@@ -50,8 +50,8 @@ function download(images, options) {
     });
 }
 function downloadFile(image, options, callback) {
-    const { timeout = 5000, gainInterval = 3000, againTimes = 0 } = options;
-    let { url, path = '/', fileName = helper_1.createFileName(), extract = 'jpg' } = image;
+    const { timeout = 5000, gainInterval = 3000, againTimes = 0 } = options || {};
+    let { url, path = '/', fileName = helper_1.createFileName(), extract = 'jpg' } = image || {};
     const allPath = `${path}${fileName}.${extract}`;
     if (!url)
         return callback(allPath, 2);

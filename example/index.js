@@ -1,20 +1,20 @@
-const { default: grab } = require('cartoon-catch');
+const { default: grab } = require('../dist/main');
 const Iconv = require('iconv-lite');
 const base64decode = require('./base64decode');
 const fetch = require('node-fetch');
 
-grab('http://mangabz.com/242bz/', {
-	name: '篮球少年王',
-	target: '.detail-list-item a',
-	host: 'http://mangabz.com/'
-}, (res) => {
-	const text = res.split('eval(')[1].split(')\n')[0];
-	eval('global.func = ' + text);
-	eval(global.func);
-	return [
-		newImgs
-	];
-})
+// grab('http://mangabz.com/242bz/', {
+// 	name: '篮球少年王',
+// 	target: '.detail-list-item a',
+// 	host: 'http://mangabz.com/'
+// }, (res) => {
+// 	const text = res.split('eval(')[1].split(')\n')[0];
+// 	eval('global.func = ' + text);
+// 	eval(global.func);
+// 	return [
+// 		newImgs
+// 	];
+// })
 
 // grab('http://m.gugu5.com/o/yirenzhixia/', {
 // 	name: '../一人之下',
@@ -76,17 +76,17 @@ grab('http://mangabz.com/242bz/', {
 // })
 
 
-// grab('http://m.pufei.org/manhua/74/index.html', {
-// 	name: '啊啊啊',
-// 	imageHost: 'http://res.img.scbrxhwl.com/',
-// 	host: 'http://m.pufei.org',
-// 	target: '#chapterList2 a',
-// 	encoding: false,
-// }, (res, url, title) => {
-// 	const cp = res.split('cp="')[1].split('";')[0];
-// 	const newImgs = eval(eval(base64decode(cp).slice(4)));
-// 	return [newImgs, title];
-// })
+grab('http://m.pufei.org/manhua/74/index.html', {
+	name: '啊啊啊',
+	imageHost: 'http://res.img.scbrxhwl.com/',
+	host: 'http://m.pufei.org',
+	target: '#chapterList2 a',
+	encoding: false,
+}, (res, url, title) => {
+	const cp = res.split('cp="')[1].split('";')[0];
+	const newImgs = eval(eval(base64decode(cp).slice(4)));
+	return [newImgs, title];
+})
 
 
 // grab('http://m.ikkdm.com/comiclist/4/', {

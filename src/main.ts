@@ -20,7 +20,7 @@ const grap = async (url: string, options: OptionsInterface, transform: Function)
         }
     })
     .then(async (html) => (options.encoding ? await html.text() : await html.buffer()))
-    .then((html: any) => options.encoding ? html : Iconv.decode(html, 'gb2312'))
+    .then((html: Buffer | string) => typeof html === 'string' ? html : Iconv.decode(html, 'gb2312'))
     .catch(e => {
         log(`请求超时 ${url} ${e}`)
         return null
@@ -50,7 +50,7 @@ const downloadImages = async (urls, options: OptionsInterface, transform: Functi
         if (options.beforeFunction) {
             result = await options.beforeFunction(item)
         }else{
-            // log('发起请求', url);
+            log('发起请求', url);
             result = await nodeFetch(url, {
                 method: 'get',
                 timeout: 5000,

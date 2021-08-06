@@ -9,7 +9,7 @@ const log = Debug.debug('debug')
 let bar = null;
 
 async function download(images: Array<ImageInterface>, options: OptionsInterface): Promise<string>{
-    const { title = '名称', parallel = 5 } = options;
+    const { title = '名称', parallel = 5 } = options || {};
     const total = images.length;
     bar = new Progress(`${title}(:current/:total): [:bar] [:percent]`, { total: +total, width: 50 });
     let queue = parallel < total ? parallel : total;
@@ -39,9 +39,9 @@ async function download(images: Array<ImageInterface>, options: OptionsInterface
     })
 }
 
-function downloadFile(image: ImageInterface, options: OptionsInterface, callback): Function | void {
-    const { timeout = 5000, gainInterval = 3000, againTimes = 0 } = options;
-    let { url, path = '/', fileName = createFileName(), extract = 'jpg' } = image;
+function downloadFile(image: ImageInterface, options: OptionsInterface, callback: Function): Function | void {
+    const { timeout = 5000, gainInterval = 3000, againTimes = 0 } = options || {};
+    let { url, path = '/', fileName = createFileName(), extract = 'jpg' } = image || {};
     const allPath = `${path}${fileName}.${extract}`;
     if(!url) return callback(allPath, 2);
     url = url.indexOf('http') !== 0 ? `http:${url}` : url;
@@ -91,12 +91,12 @@ function downloadFile(image: ImageInterface, options: OptionsInterface, callback
 
         }
     })
-        .then(res => res.body.pipe(writeStream))
-        .catch((err) => {
-            log(`${url} 请求超时 ${err}`);
-            clearTimeout(tryAgain);
-            tryAgain = setTimeout(failCallBack, gainInterval);
-        })
+    .then(res => res.body.pipe(writeStream))
+    .catch((err) => {
+        log(`${url} 请求超时 ${err}`);
+        clearTimeout(tryAgain);
+        tryAgain = setTimeout(failCallBack, gainInterval);
+    })
 }
 
 

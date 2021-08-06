@@ -47,7 +47,7 @@ const grap = (url, options, transform) => __awaiter(void 0, void 0, void 0, func
         headers: Object.assign({ "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1" }, options.headers)
     })
         .then((html) => __awaiter(void 0, void 0, void 0, function* () { return (options.encoding ? yield html.text() : yield html.buffer()); }))
-        .then((html) => options.encoding ? html : Iconv.decode(html, 'gb2312'))
+        .then((html) => typeof html === 'string' ? html : Iconv.decode(html, 'gb2312'))
         .catch(e => {
         log(`请求超时 ${url} ${e}`);
         return null;
@@ -77,7 +77,7 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
             result = yield options.beforeFunction(item);
         }
         else {
-            // log('发起请求', url);
+            log('发起请求', url);
             result = yield node_fetch_1.default(url, {
                 method: 'get',
                 timeout: 5000,
