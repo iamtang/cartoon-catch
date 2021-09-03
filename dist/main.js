@@ -36,12 +36,14 @@ const Iconv = __importStar(require("iconv-lite"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const debug_1 = __importDefault(require("debug"));
 const download_1 = __importDefault(require("./download"));
+const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
-const grap = (url, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
+const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
+    const host = helper_1.getHost(pageUrl);
     options = Object.assign({ host: '', encoding: true }, options);
     if (!options.target)
         throw new Error('请输入target');
-    let html = yield node_fetch_1.default(url, {
+    let html = yield node_fetch_1.default(pageUrl, {
         method: 'get',
         timeout: 5000,
         headers: Object.assign({ "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1" }, options.headers)
@@ -49,12 +51,15 @@ const grap = (url, options, transform) => __awaiter(void 0, void 0, void 0, func
         .then((html) => __awaiter(void 0, void 0, void 0, function* () { return (options.encoding ? yield html.text() : yield html.buffer()); }))
         .then((html) => typeof html === 'string' ? html : Iconv.decode(html, 'gb2312'))
         .catch(e => {
-        log(`请求超时 ${url} ${e}`);
+        log(`请求超时 ${pageUrl} ${e}`);
         return null;
     });
     const $ = cheerio_1.default.load(html);
     const urls = $(options.target).toArray().map(item => {
-        let url = `${options.host}${$(item).attr('href')}`;
+        let url = $(item).attr('href');
+        if (!/^http(s)?:\/\//.test(url)) {
+            url = `${options.host || host}${url}`;
+        }
         let title = $(item).text().trim();
         options.urlReplace && (url = url.replace(options.urlReplace[0], options.urlReplace[1]));
         options.titleReplace && (title = title.replace(options.titleReplace[0], options.titleReplace[1]));
@@ -67,7 +72,7 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
     options = Object.assign({ imageHost: '', headers: {}, downloadOptions: {} }, options);
     for (const item of urls) {
         let url, title, result;
-        if (Object.prototype.toString.call(item) == '[object Array]') {
+        if (helper_1.isArray(item)) {
             [url, title] = item;
         }
         else {

@@ -3,18 +3,18 @@ const Iconv = require('iconv-lite');
 const base64decode = require('./base64decode');
 const fetch = require('node-fetch');
 
-// grab('http://mangabz.com/242bz/', {
-// 	name: '篮球少年王',
-// 	target: '.detail-list-item a',
-// 	host: 'http://mangabz.com/'
-// }, (res) => {
-// 	const text = res.split('eval(')[1].split(')\n')[0];
-// 	eval('global.func = ' + text);
-// 	eval(global.func);
-// 	return [
-// 		newImgs
-// 	];
-// })
+grab('http://mangabz.com/803bz/', {
+	name: '../无能的奈奈',
+	target: '.detail-list-item a',
+	// host: 'http://mangabz.com/'
+}, (res) => {
+	const text = res.split('eval(')[1].split(')\n')[0];
+	eval('global.func = ' + text);
+	eval(global.func);
+	return [
+		newImgs
+	];
+})
 
 // grab('http://m.gugu5.com/o/yirenzhixia/', {
 // 	name: '../一人之下',
@@ -29,8 +29,8 @@ const fetch = require('node-fetch');
 // })
 
 
-// grab('http://www.qiman6.com/16080/', {
-// 	name: '../一人之下',
+// grab('http://www.qiman6.com/22691/', {
+// 	name: '../无能的奈奈',
 // 	target: '#chapter-list1 a',
 // 	host: 'http://www.qiman6.com'
 // }, (res) => {
@@ -61,8 +61,8 @@ const fetch = require('node-fetch');
 // })
 
 
-// grab('https://www.77mh.cc/colist_110020.html', {
-// 	name: '啊啊啊',
+// grab('https://www.77mh.cc/colist_239814.html', {
+// 	name: '无能的奈奈',
 // 	target: '.ar_list_col a',
 // 	host: 'https://www.77mh.cc'
 // }, (res) => {
@@ -76,17 +76,17 @@ const fetch = require('node-fetch');
 // })
 
 
-grab('http://m.pufei.org/manhua/74/index.html', {
-	name: '啊啊啊',
-	imageHost: 'http://res.img.scbrxhwl.com/',
-	host: 'http://m.pufei.org',
-	target: '#chapterList2 a',
-	encoding: false,
-}, (res, url, title) => {
-	const cp = res.split('cp="')[1].split('";')[0];
-	const newImgs = eval(eval(base64decode(cp).slice(4)));
-	return [newImgs, title];
-})
+// grab('http://m.pufei.org/manhua/74/index.html', {
+// 	name: '啊啊啊',
+// 	imageHost: 'http://res.img.scbrxhwl.com/',
+// 	host: 'http://m.pufei.org',
+// 	target: '#chapterList2 a',
+// 	encoding: false,
+// }, (res, url, title) => {
+// 	const cp = res.split('cp="')[1].split('";')[0];
+// 	const newImgs = eval(eval(base64decode(cp).slice(4)));
+// 	return [newImgs, title];
+// })
 
 
 // grab('http://m.ikkdm.com/comiclist/4/', {

@@ -24,9 +24,9 @@ grab('http://xx.com/m12345', options, function(html, url, title){
 ## options 参数
 |参数名|值|是否必填|类型|备注|
 |:----|:----|:----|:----|:----|
-| host  | http://xxx.com | 是 | string | 网站域名 |
 | name  | ../鬼灭之刃 | 是 | string | 指定下载路径 |
 | target | .list a | 是 | string | 跳转到详情的dom |
+| host  | http://xxx.com | 否 | string | 设置详情页host, 默认使用页面host |
 | imageHost | http://cdn.xxx.com | 否 | string | 图片地址的host，如无就无需传 |
 | encoding | true | 否 | boolean | 请求返回值乱码时传false |
 | headers | {} | 否 | object | 自定义头部 |
