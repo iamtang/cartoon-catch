@@ -16,6 +16,7 @@ const progress_1 = __importDefault(require("progress"));
 const fs_1 = __importDefault(require("fs"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const debug_1 = __importDefault(require("debug"));
+const setting_json_1 = __importDefault(require("../setting.json"));
 const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
 let bar = null;
@@ -50,7 +51,7 @@ function download(images, options) {
     });
 }
 function downloadFile(image, options, callback) {
-    const { timeout = 5000, gainInterval = 3000, againTimes = 0 } = options || {};
+    const { timeout = 5000, gainInterval = 3000, againTimes = 0, headers = {} } = options || {};
     let { url, path = '/', fileName = helper_1.createFileName(), extract = 'jpg' } = image || {};
     const allPath = `${path}${fileName}.${extract}`;
     if (!url)
@@ -94,9 +95,7 @@ function downloadFile(image, options, callback) {
     });
     node_fetch_1.default(url, {
         timeout: timeout + 300,
-        headers: {
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1",
-        }
+        headers: Object.assign({ "User-Agent": setting_json_1.default.ua }, headers)
     })
         .then(res => res.body.pipe(writeStream))
         .catch((err) => {
@@ -106,4 +105,3 @@ function downloadFile(image, options, callback) {
     });
 }
 exports.default = download;
-//# sourceMappingURL=download.js.map

@@ -1,12 +1,9 @@
 
 import cheerio from 'cheerio'
-import * as Iconv from 'iconv-lite'
-import nodeFetch from 'node-fetch'
 import Debug from 'debug'
 import download from './download'
-import { OptionsInterface } from './interface/main.interface';
-import { isArray, getHost } from './helper';
-
+import { OptionsInterface } from './interface/main.interface'
+import { isArray, getHost, getHtml } from './helper'
 
 const log = Debug.debug('debug')
 
@@ -14,20 +11,14 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
     const host = getHost(pageUrl);
     options = Object.assign({host: '', encoding: true }, options)
     if(!options.target) throw new Error('请输入target');
-    let html = await nodeFetch(pageUrl, {
-        method: 'get',
-        timeout: 5000,
-        headers: {
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1",
-            ...options.headers
-        }
+    let html = await getHtml(pageUrl, {
+        headers: options.headers
     })
-    .then(async (html) => (options.encoding ? await html.text() : await html.buffer()))
-    .then((html: Buffer | string) => typeof html === 'string' ? html : Iconv.decode(html, 'gb2312'))
     .catch(e => {
         log(`请求超时 ${pageUrl} ${e}`)
         return null
     });
+    if(!html) return null;
     const $ = cheerio.load(html);
     const urls = $(options.target).toArray().map(item => {
         let url = $(item).attr('href');
@@ -57,16 +48,9 @@ const downloadImages = async (urls, options: OptionsInterface, transform: Functi
             result = await options.beforeFunction(item)
         }else{
             log('发起请求', url);
-            result = await nodeFetch(url, {
-                method: 'get',
-                timeout: 5000,
-                headers: {
-                    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1",
-                    ...options.headers
-                }
+            result = await getHtml(url, {
+                headers: options.headers
             })
-            .then(async (html) => (options.encoding ? await html.text() : await html.buffer()))
-            .then((html: any) => options.encoding ? html : Iconv.decode(html, 'gb2312'))
             .catch(e => {
                 log('请求超时', url, e)
                 urls.push(item)

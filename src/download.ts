@@ -2,6 +2,7 @@ import Progress from 'progress'
 import fs from 'fs'
 import nodeFetch from 'node-fetch'
 import Debug from 'debug'
+import config from '../setting.json';
 import { ImageInterface, OptionsInterface } from './interface/download.interface';
 import { createFileName } from './helper';
 
@@ -40,7 +41,7 @@ async function download(images: Array<ImageInterface>, options: OptionsInterface
 }
 
 function downloadFile(image: ImageInterface, options: OptionsInterface, callback: Function): Function | void {
-    const { timeout = 5000, gainInterval = 3000, againTimes = 0 } = options || {};
+    const { timeout = 5000, gainInterval = 3000, againTimes = 0, headers = {} } = options || {};
     let { url, path = '/', fileName = createFileName(), extract = 'jpg' } = image || {};
     const allPath = `${path}${fileName}.${extract}`;
     if(!url) return callback(allPath, 2);
@@ -87,7 +88,8 @@ function downloadFile(image: ImageInterface, options: OptionsInterface, callback
 	nodeFetch(url, {
         timeout: timeout + 300,
         headers: {
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1",
+            "User-Agent": config.ua,
+            ...headers
 
         }
     })

@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -32,8 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cheerio_1 = __importDefault(require("cheerio"));
-const Iconv = __importStar(require("iconv-lite"));
-const node_fetch_1 = __importDefault(require("node-fetch"));
 const debug_1 = __importDefault(require("debug"));
 const download_1 = __importDefault(require("./download"));
 const helper_1 = require("./helper");
@@ -43,17 +22,15 @@ const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, 
     options = Object.assign({ host: '', encoding: true }, options);
     if (!options.target)
         throw new Error('请输入target');
-    let html = yield node_fetch_1.default(pageUrl, {
-        method: 'get',
-        timeout: 5000,
-        headers: Object.assign({ "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1" }, options.headers)
+    let html = yield helper_1.getHtml(pageUrl, {
+        headers: options.headers
     })
-        .then((html) => __awaiter(void 0, void 0, void 0, function* () { return (options.encoding ? yield html.text() : yield html.buffer()); }))
-        .then((html) => typeof html === 'string' ? html : Iconv.decode(html, 'gb2312'))
         .catch(e => {
         log(`请求超时 ${pageUrl} ${e}`);
         return null;
     });
+    if (!html)
+        return null;
     const $ = cheerio_1.default.load(html);
     const urls = $(options.target).toArray().map(item => {
         let url = $(item).attr('href');
@@ -83,13 +60,9 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
         }
         else {
             log('发起请求', url);
-            result = yield node_fetch_1.default(url, {
-                method: 'get',
-                timeout: 5000,
-                headers: Object.assign({ "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1" }, options.headers)
+            result = yield helper_1.getHtml(url, {
+                headers: options.headers
             })
-                .then((html) => __awaiter(void 0, void 0, void 0, function* () { return (options.encoding ? yield html.text() : yield html.buffer()); }))
-                .then((html) => options.encoding ? html : Iconv.decode(html, 'gb2312'))
                 .catch(e => {
                 log('请求超时', url, e);
                 urls.push(item);
@@ -120,4 +93,3 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
     process.exit(0);
 });
 exports.default = grap;
-//# sourceMappingURL=main.js.map

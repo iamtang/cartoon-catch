@@ -13,4 +13,5 @@ export interface OptionsInterface {
 	timeout: number
 	gainInterval: number
 	againTimes: number
+	headers: object
 }
