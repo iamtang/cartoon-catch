@@ -48,7 +48,7 @@ function getHost(url) {
     return urlArr ? urlArr[0] : null;
 }
 exports.getHost = getHost;
-function getHtml(pageUrl, options) {
+function getHtml(pageUrl, options = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield node_fetch_1.default(pageUrl, {
             method: 'get',

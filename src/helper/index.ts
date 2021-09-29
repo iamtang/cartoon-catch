@@ -18,7 +18,7 @@ function getHost(url: string): string | null{
 }
 
 
-async function getHtml(pageUrl: string, options: getHtmlInterface): Promise<string|null> {
+async function getHtml(pageUrl: string, options: getHtmlInterface = {}): Promise<string|null> {
 	return await nodeFetch(pageUrl, {
         method: 'get',
         timeout: 5000,
