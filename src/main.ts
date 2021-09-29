@@ -1,7 +1,7 @@
 
 import cheerio from 'cheerio'
 import Debug from 'debug'
-import download from './download'
+import { download } from './download'
 import { OptionsInterface } from './interface/main.interface'
 import { isArray, getHost, getHtml } from './helper'
 

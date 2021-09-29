@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.downloadFile = exports.download = void 0;
 const progress_1 = __importDefault(require("progress"));
 const fs_1 = __importDefault(require("fs"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
@@ -50,6 +51,7 @@ function download(images, options) {
         });
     });
 }
+exports.download = download;
 function downloadFile(image, options, callback) {
     const { timeout = 5000, gainInterval = 3000, againTimes = 0, headers = {} } = options || {};
     let { url, path = '/', fileName = helper_1.createFileName(), extract = 'jpg' } = image || {};
@@ -104,4 +106,4 @@ function downloadFile(image, options, callback) {
         tryAgain = setTimeout(failCallBack, gainInterval);
     });
 }
-exports.default = download;
+exports.downloadFile = downloadFile;

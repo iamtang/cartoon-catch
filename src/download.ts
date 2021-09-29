@@ -102,4 +102,7 @@ function downloadFile(image: ImageInterface, options: OptionsInterface, callback
 }
 
 
-export default download
+export {
+    download,
+    downloadFile
+}

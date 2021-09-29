@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cheerio_1 = __importDefault(require("cheerio"));
 const debug_1 = __importDefault(require("debug"));
-const download_1 = __importDefault(require("./download"));
+const download_1 = require("./download");
 const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
 const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,7 +83,7 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
                 });
                 i++;
             }
-            yield download_1.default(arr, Object.assign({ title: fileName }, options.downloadOptions));
+            yield download_1.download(arr, Object.assign({ title: fileName }, options.downloadOptions));
         }
         else {
             log('请求出错', result);
