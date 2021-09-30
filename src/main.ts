@@ -6,28 +6,35 @@ import { OptionsInterface } from './interface/main.interface'
 import { isArray, getHost, getHtml } from './helper'
 
 const log = Debug.debug('debug')
+const error = Debug.debug('error')
 
 const grap = async (pageUrl: string, options: OptionsInterface, transform: Function) => {
-    const host = getHost(pageUrl);
-    options = Object.assign({host: '', encoding: true }, options)
-    if(!options.target) throw new Error('请输入target');
+    const {
+        target, 
+        headers = {}, 
+        slice = [], 
+        urlReplace, 
+        titleReplace, 
+        host = getHost(pageUrl)
+    } = options;
+    if(!target) throw new Error('请输入target');
     let html = await getHtml(pageUrl, {
-        headers: options.headers
+        headers
     })
     .catch(e => {
-        log(`请求超时 ${pageUrl} ${e}`)
+        error(`请求超时 ${pageUrl} ${e}`)
         return null
     });
     if(!html) return null;
     const $ = cheerio.load(html);
-    const urls = $(options.target).toArray().map(item => {
+    const urls = $(target).toArray().slice(...slice).map(item => {
         let url = $(item).attr('href');
         if(!/^http(s)?:\/\//.test(url)){
-            url = `${options.host || host}${url}`;
+            url = `${host}${url}`;
         }
         let title = $(item).text().trim();
-        options.urlReplace && (url = url.replace(options.urlReplace[0], options.urlReplace[1]))
-        options.titleReplace && (title = title.replace(options.titleReplace[0], options.titleReplace[1]))
+        urlReplace && (url = url.replace(urlReplace[0], urlReplace[1]))
+        titleReplace && (title = title.replace(titleReplace[0], titleReplace[1]))
         return [url, title];
     });
     log(urls)
@@ -35,7 +42,14 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
 } 
 
 const downloadImages = async (urls, options: OptionsInterface, transform: Function) => {
-    options = Object.assign({imageHost: '', headers: {}, downloadOptions: {} }, options)
+    const { 
+        beforeFunction, 
+        headers = {}, 
+        imageHost = '', 
+        name, 
+        extract, 
+        downloadOptions = {} 
+    } = options;
 	for(const item of urls){
         let url, title, result;
         if(isArray(item)){
@@ -44,15 +58,15 @@ const downloadImages = async (urls, options: OptionsInterface, transform: Functi
             url = item;
         }
 
-        if (options.beforeFunction) {
-            result = await options.beforeFunction(item)
+        if (beforeFunction) {
+            result = await beforeFunction(item)
         }else{
             log('发起请求', url);
             result = await getHtml(url, {
-                headers: options.headers
+                headers
             })
             .catch(e => {
-                log('请求超时', url, e)
+                error('请求超时', url, e)
                 urls.push(item)
                 return null
             });
@@ -65,16 +79,16 @@ const downloadImages = async (urls, options: OptionsInterface, transform: Functi
             let arr = [];
             for(let src of imgs){
                 arr.push({
-                    url: `${options.imageHost}${src}`,
-                    path: `${options.name}/${fileName}/`,
+                    url: `${imageHost}${src}`,
+                    path: `${name}/${fileName}/`,
                     fileName: i,
-                    extract: options.extract
+                    extract
                 })
                 i++;
             }
-            await download(arr, {title: fileName, ...options.downloadOptions})
+            await download(arr, {title: fileName, ...downloadOptions})
         }else{
-            log('请求出错', result)
+            error('请求出错', result)
         }
     }
     log('\n========全部下载完成========')

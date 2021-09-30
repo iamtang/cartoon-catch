@@ -20,6 +20,7 @@ const debug_1 = __importDefault(require("debug"));
 const setting_json_1 = __importDefault(require("../setting.json"));
 const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
+const error = debug_1.default.debug('error');
 let bar = null;
 function download(images, options) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -83,7 +84,7 @@ function downloadFile(image, options, callback) {
         callback(allPath, 1);
     })
         .on('error', (err) => {
-        log(`${url} 下载错误 ${err}`);
+        error(`${url} 下载错误 ${err}`);
         clearTimeout(tryAgain);
         tryAgain = setTimeout(failCallBack, gainInterval);
     })
@@ -101,7 +102,7 @@ function downloadFile(image, options, callback) {
     })
         .then(res => res.body.pipe(writeStream))
         .catch((err) => {
-        log(`${url} 请求超时 ${err}`);
+        error(`${url} 请求超时 ${err}`);
         clearTimeout(tryAgain);
         tryAgain = setTimeout(failCallBack, gainInterval);
     });

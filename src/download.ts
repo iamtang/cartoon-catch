@@ -7,6 +7,8 @@ import { ImageInterface, OptionsInterface } from './interface/download.interface
 import { createFileName } from './helper';
 
 const log = Debug.debug('debug')
+const error = Debug.debug('error')
+
 let bar = null;
 
 async function download(images: Array<ImageInterface>, options: OptionsInterface): Promise<string>{
@@ -72,7 +74,7 @@ function downloadFile(image: ImageInterface, options: OptionsInterface, callback
             callback(allPath, 1);
         })
         .on('error', (err) => {
-            log(`${url} 下载错误 ${err}`)
+            error(`${url} 下载错误 ${err}`)
             clearTimeout(tryAgain);
             tryAgain = setTimeout(failCallBack, gainInterval);
         })
@@ -95,12 +97,11 @@ function downloadFile(image: ImageInterface, options: OptionsInterface, callback
     })
     .then(res => res.body.pipe(writeStream))
     .catch((err) => {
-        log(`${url} 请求超时 ${err}`);
+        error(`${url} 请求超时 ${err}`);
         clearTimeout(tryAgain);
         tryAgain = setTimeout(failCallBack, gainInterval);
     })
 }
-
 
 export {
     download,

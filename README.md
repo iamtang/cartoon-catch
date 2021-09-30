@@ -27,6 +27,7 @@ grab('http://xx.com/m12345', options, function(html, url, title){
 | name  | ../鬼灭之刃 | 是 | string | 指定下载路径 |
 | target | .list a | 是 | string | 跳转到详情的dom |
 | host  | http://xxx.com | 否 | string | 设置详情页host, 默认使用页面host |
+| slice  | [0, 2] | 否 | array | 指定数组返回选定的元素 |
 | imageHost | http://cdn.xxx.com | 否 | string | 图片地址的host，如无就无需传 |
 | encoding | true | 否 | boolean | 请求返回值乱码时传false |
 | headers | {} | 否 | object | 自定义头部 |

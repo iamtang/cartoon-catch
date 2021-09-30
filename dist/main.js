@@ -17,36 +17,36 @@ const debug_1 = __importDefault(require("debug"));
 const download_1 = require("./download");
 const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
+const error = debug_1.default.debug('error');
 const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
-    const host = helper_1.getHost(pageUrl);
-    options = Object.assign({ host: '', encoding: true }, options);
-    if (!options.target)
+    const { target, headers = {}, slice = [], urlReplace, titleReplace, host = helper_1.getHost(pageUrl) } = options;
+    if (!target)
         throw new Error('请输入target');
     let html = yield helper_1.getHtml(pageUrl, {
-        headers: options.headers
+        headers
     })
         .catch(e => {
-        log(`请求超时 ${pageUrl} ${e}`);
+        error(`请求超时 ${pageUrl} ${e}`);
         return null;
     });
     if (!html)
         return null;
     const $ = cheerio_1.default.load(html);
-    const urls = $(options.target).toArray().map(item => {
+    const urls = $(target).toArray().slice(...slice).map(item => {
         let url = $(item).attr('href');
         if (!/^http(s)?:\/\//.test(url)) {
-            url = `${options.host || host}${url}`;
+            url = `${host}${url}`;
         }
         let title = $(item).text().trim();
-        options.urlReplace && (url = url.replace(options.urlReplace[0], options.urlReplace[1]));
-        options.titleReplace && (title = title.replace(options.titleReplace[0], options.titleReplace[1]));
+        urlReplace && (url = url.replace(urlReplace[0], urlReplace[1]));
+        titleReplace && (title = title.replace(titleReplace[0], titleReplace[1]));
         return [url, title];
     });
     log(urls);
     return downloadImages(urls, options, transform);
 });
 const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
-    options = Object.assign({ imageHost: '', headers: {}, downloadOptions: {} }, options);
+    const { beforeFunction, headers = {}, imageHost = '', name, extract, downloadOptions = {} } = options;
     for (const item of urls) {
         let url, title, result;
         if (helper_1.isArray(item)) {
@@ -55,16 +55,16 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
         else {
             url = item;
         }
-        if (options.beforeFunction) {
-            result = yield options.beforeFunction(item);
+        if (beforeFunction) {
+            result = yield beforeFunction(item);
         }
         else {
             log('发起请求', url);
             result = yield helper_1.getHtml(url, {
-                headers: options.headers
+                headers
             })
                 .catch(e => {
-                log('请求超时', url, e);
+                error('请求超时', url, e);
                 urls.push(item);
                 return null;
             });
@@ -76,17 +76,17 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
             let arr = [];
             for (let src of imgs) {
                 arr.push({
-                    url: `${options.imageHost}${src}`,
-                    path: `${options.name}/${fileName}/`,
+                    url: `${imageHost}${src}`,
+                    path: `${name}/${fileName}/`,
                     fileName: i,
-                    extract: options.extract
+                    extract
                 });
                 i++;
             }
-            yield download_1.download(arr, Object.assign({ title: fileName }, options.downloadOptions));
+            yield download_1.download(arr, Object.assign({ title: fileName }, downloadOptions));
         }
         else {
-            log('请求出错', result);
+            error('请求出错', result);
         }
     }
     log('\n========全部下载完成========');

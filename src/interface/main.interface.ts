@@ -15,9 +15,10 @@ export interface OptionsInterface {
     target: string
 	headers: HeadersOmterface
 	encoding: boolean
+	slice: Array<number>
 	host: string
-	urlReplace: Array<string>
-	titleReplace: Array<string>
+	urlReplace: Array<any>
+	titleReplace: Array<any>
 	beforeFunction: Function
 	imageHost: string
 	name: string
