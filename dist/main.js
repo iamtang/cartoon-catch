@@ -19,7 +19,8 @@ const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
 const error = debug_1.default.debug('error');
 const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
-    const { target, headers = {}, slice = [], urlReplace, titleReplace, host = helper_1.getHost(pageUrl) } = options;
+    const { target, headers = {}, slice = [], urlReplace = [], titleReplace = [], host = helper_1.getHost(pageUrl) } = options;
+    // const urlReplace: [any?, any?] = options.urlReplace || [];
     if (!target)
         throw new Error('请输入target');
     let html = yield helper_1.getHtml(pageUrl, {
@@ -33,13 +34,11 @@ const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, 
         return null;
     const $ = cheerio_1.default.load(html);
     const urls = $(target).toArray().slice(...slice).map(item => {
-        let url = $(item).attr('href');
+        let url = $(item).attr('href').replace(...urlReplace);
         if (!/^http(s)?:\/\//.test(url)) {
             url = `${host}${url}`;
         }
-        let title = $(item).text().trim();
-        urlReplace && (url = url.replace(urlReplace[0], urlReplace[1]));
-        titleReplace && (title = title.replace(titleReplace[0], titleReplace[1]));
+        let title = $(item).text().trim().replace(...titleReplace);
         return [url, title];
     });
     log(urls);

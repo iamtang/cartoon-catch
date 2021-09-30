@@ -17,8 +17,8 @@ export interface OptionsInterface {
 	encoding: boolean
 	slice: Array<number>
 	host: string
-	urlReplace: Array<any>
-	titleReplace: Array<any>
+	urlReplace: [string?, string?]
+	titleReplace: [string?, string?]
 	beforeFunction: Function
 	imageHost: string
 	name: string

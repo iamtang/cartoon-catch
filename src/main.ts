@@ -13,10 +13,11 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
         target, 
         headers = {}, 
         slice = [], 
-        urlReplace, 
-        titleReplace, 
+        urlReplace = [],
+        titleReplace = [],
         host = getHost(pageUrl)
     } = options;
+    // const urlReplace: [any?, any?] = options.urlReplace || [];
     if(!target) throw new Error('请输入target');
     let html = await getHtml(pageUrl, {
         headers
@@ -28,13 +29,11 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
     if(!html) return null;
     const $ = cheerio.load(html);
     const urls = $(target).toArray().slice(...slice).map(item => {
-        let url = $(item).attr('href');
+        let url = $(item).attr('href').replace(...urlReplace);
         if(!/^http(s)?:\/\//.test(url)){
             url = `${host}${url}`;
         }
-        let title = $(item).text().trim();
-        urlReplace && (url = url.replace(urlReplace[0], urlReplace[1]))
-        titleReplace && (title = title.replace(titleReplace[0], titleReplace[1]))
+        let title = $(item).text().trim().replace(...titleReplace);
         return [url, title];
     });
     log(urls)
