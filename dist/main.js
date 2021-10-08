@@ -19,13 +19,11 @@ const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
 const error = debug_1.default.debug('error');
 const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
-    const { target, headers = {}, slice = [], urlReplace = [], titleReplace = [], host = helper_1.getHost(pageUrl) } = options;
+    const { target, slice = [], urlReplace = [], titleReplace = [], host = helper_1.getHost(pageUrl) } = options;
     // const urlReplace: [any?, any?] = options.urlReplace || [];
     if (!target)
         throw new Error('请输入target');
-    let html = yield helper_1.getHtml(pageUrl, {
-        headers
-    })
+    let html = yield helper_1.getHtml(pageUrl, options)
         .catch(e => {
         error(`请求超时 ${pageUrl} ${e}`);
         return null;
@@ -42,6 +40,7 @@ const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, 
         return [url, title];
     });
     log(urls);
+    // downloadImages
     return downloadImages(urls, options, transform);
 });
 const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, void 0, function* () {

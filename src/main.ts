@@ -11,7 +11,6 @@ const error = Debug.debug('error')
 const grap = async (pageUrl: string, options: OptionsInterface, transform: Function) => {
     const {
         target, 
-        headers = {}, 
         slice = [], 
         urlReplace = [],
         titleReplace = [],
@@ -19,9 +18,7 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
     } = options;
     // const urlReplace: [any?, any?] = options.urlReplace || [];
     if(!target) throw new Error('请输入target');
-    let html = await getHtml(pageUrl, {
-        headers
-    })
+    let html = await getHtml(pageUrl, options)
     .catch(e => {
         error(`请求超时 ${pageUrl} ${e}`)
         return null
@@ -37,6 +34,7 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
         return [url, title];
     });
     log(urls)
+    // downloadImages
     return downloadImages(urls, options, transform)
 } 
 
