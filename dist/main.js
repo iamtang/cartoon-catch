@@ -61,7 +61,7 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
             result = yield helper_1.getHtml(url, options)
                 .catch(e => {
                 error('请求超时', url, e);
-                urls.push(item);
+                urls.unshift(item);
                 return null;
             });
             log('接收请求', url);

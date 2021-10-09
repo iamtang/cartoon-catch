@@ -14,7 +14,7 @@ let bar = null;
 async function download(images: Array<ImageInterface>, options: OptionsInterface): Promise<string>{
     const { title = '名称', parallel = 5 } = options || {};
     const total = images.length;
-    bar = new Progress(`${title}(:current/:total): [:bar] [:percent]`, { total: +total, width: 50 });
+    bar = new Progress(`${title}(:current/:total): [:bar] [:percent]`, { total: +total, width: 50, clear: true });
     let queue = parallel < total ? parallel : total;
     let finish = null;
     

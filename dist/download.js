@@ -26,7 +26,7 @@ function download(images, options) {
     return __awaiter(this, void 0, void 0, function* () {
         const { title = '名称', parallel = 5 } = options || {};
         const total = images.length;
-        bar = new progress_1.default(`${title}(:current/:total): [:bar] [:percent]`, { total: +total, width: 50 });
+        bar = new progress_1.default(`${title}(:current/:total): [:bar] [:percent]`, { total: +total, width: 50, clear: true });
         let queue = parallel < total ? parallel : total;
         let finish = null;
         function callback(allPath, n) {
