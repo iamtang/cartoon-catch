@@ -44,7 +44,7 @@ const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, 
     return downloadImages(urls, options, transform);
 });
 const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
-    const { beforeFunction, headers = {}, imageHost = '', name, extract, downloadOptions = {} } = options;
+    const { beforeFunction, imageHost = '', name, extract, downloadOptions = {} } = options;
     for (const item of urls) {
         let url, title, result;
         if (helper_1.isArray(item)) {
@@ -58,9 +58,7 @@ const downloadImages = (urls, options, transform) => __awaiter(void 0, void 0, v
         }
         else {
             log('发起请求', url);
-            result = yield helper_1.getHtml(url, {
-                headers
-            })
+            result = yield helper_1.getHtml(url, options)
                 .catch(e => {
                 error('请求超时', url, e);
                 urls.push(item);

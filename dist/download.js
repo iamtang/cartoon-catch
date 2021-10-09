@@ -56,7 +56,7 @@ exports.download = download;
 function downloadFile(image, options, callback) {
     const { timeout = 5000, gainInterval = 3000, againTimes = 0, headers = {} } = options || {};
     let { url, path = '/', fileName = helper_1.createFileName(), extract = 'jpg' } = image || {};
-    const allPath = `${path}${fileName}.${extract}`;
+    const allPath = `${path}${fileName.replace(/[\/\\\|\<\>\*\:\?\"]/, '-')}.${extract}`;
     if (!url)
         return callback(allPath, 2);
     url = url.indexOf('http') !== 0 ? `http:${url}` : url;

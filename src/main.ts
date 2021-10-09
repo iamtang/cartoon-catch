@@ -41,7 +41,6 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
 const downloadImages = async (urls, options: OptionsInterface, transform: Function) => {
     const { 
         beforeFunction, 
-        headers = {}, 
         imageHost = '', 
         name, 
         extract, 
@@ -59,9 +58,7 @@ const downloadImages = async (urls, options: OptionsInterface, transform: Functi
             result = await beforeFunction(item)
         }else{
             log('发起请求', url);
-            result = await getHtml(url, {
-                headers
-            })
+            result = await getHtml(url, options)
             .catch(e => {
                 error('请求超时', url, e)
                 urls.push(item)

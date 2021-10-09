@@ -9,7 +9,7 @@ grab('https://www.baozimh.com/comic/yirenzhixia-dongmantang', {
 	target: '.pure-g .comics-chapters__item',
 	host: 'https://www.baozimh.com/',
 	encoding: true,
-	slice: [24]
+	slice: [518]
 }, (res) => {
 	const $ = cheerio.load(res);
 	const imgs = $('.comic-contain__item').toArray().map(item => {
