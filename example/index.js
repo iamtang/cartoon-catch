@@ -1,4 +1,4 @@
-const { default: grab } = require('cartoon-catch');
+const { default: grab } = require('../dist/main');
 const Iconv = require('iconv-lite');
 const base64decode = require('./base64decode');
 const fetch = require('node-fetch');

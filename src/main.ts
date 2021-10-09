@@ -13,7 +13,7 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
         target, 
         slice = [], 
         urlReplace = [],
-        titleReplace = [],
+        titleReplace = [/[\/\\\|\<\>\*\:\?\"]/, '-'],
         host = getHost(pageUrl)
     } = options;
     // const urlReplace: [any?, any?] = options.urlReplace || [];
@@ -30,7 +30,7 @@ const grap = async (pageUrl: string, options: OptionsInterface, transform: Funct
         if(!/^http(s)?:\/\//.test(url)){
             url = `${host}${url}`;
         }
-        let title = $(item).text().trim().replace(...titleReplace);
+        let title = $(item).text().trim().replace(titleReplace[0], titleReplace[1]);
         return [url, title];
     });
     log(urls)

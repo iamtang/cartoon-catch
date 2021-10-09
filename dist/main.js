@@ -19,7 +19,7 @@ const helper_1 = require("./helper");
 const log = debug_1.default.debug('debug');
 const error = debug_1.default.debug('error');
 const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, function* () {
-    const { target, slice = [], urlReplace = [], titleReplace = [], host = helper_1.getHost(pageUrl) } = options;
+    const { target, slice = [], urlReplace = [], titleReplace = [/[\/\\\|\<\>\*\:\?\"]/, '-'], host = helper_1.getHost(pageUrl) } = options;
     // const urlReplace: [any?, any?] = options.urlReplace || [];
     if (!target)
         throw new Error('请输入target');
@@ -36,7 +36,7 @@ const grap = (pageUrl, options, transform) => __awaiter(void 0, void 0, void 0, 
         if (!/^http(s)?:\/\//.test(url)) {
             url = `${host}${url}`;
         }
-        let title = $(item).text().trim().replace(...titleReplace);
+        let title = $(item).text().trim().replace(titleReplace[0], titleReplace[1]);
         return [url, title];
     });
     log(urls);

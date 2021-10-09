@@ -1,6 +1,6 @@
 {
   "name": "cartoon-catch",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "cartoon-catch",
   "main": "dist/main.js",
   "scripts": {
