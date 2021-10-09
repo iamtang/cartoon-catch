@@ -1,24 +1,40 @@
-const { default: grab } = require('../dist/main');
+const { default: grab } = require('cartoon-catch');
 const Iconv = require('iconv-lite');
 const base64decode = require('./base64decode');
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 
-grab('https://www.baozimh.com/comic/yirenzhixia-dongmantang', {
+
+grab('https://www.mh1234.com/comic/16279.html', {
 	name: '../一人之下',
-	target: '.pure-g .comics-chapters__item',
-	host: 'https://www.baozimh.com/',
+	target: '#chapter-list-1 a',
+	host: 'https://www.mh1234.com/',
 	encoding: true,
 	slice: [518]
 }, (res) => {
-	const $ = cheerio.load(res);
-	const imgs = $('.comic-contain__item').toArray().map(item => {
-		return item.attribs.src
-	})
+	let imgs = eval(res.split('var chapterImages = ')[1].split(';')[0]);
+	const host = eval(res.split('var chapterPath = ')[1].split(';')[0]);
+	imgs = imgs.map(item => ('https://images.wszwhg.net/'+host+item))
 	return [
 		imgs
 	];
 })
+
+// grab('https://www.baozimh.com/comic/yirenzhixia-dongmantang', {
+// 	name: '../一人之下',
+// 	target: '.pure-g .comics-chapters__item',
+// 	host: 'https://www.baozimh.com/',
+// 	encoding: true,
+// 	slice: [24 + 523]
+// }, (res) => {
+// 	const $ = cheerio.load(res);
+// 	const imgs = $('.comic-contain__item').toArray().map(item => {
+// 		return item.attribs.src
+// 	})
+// 	return [
+// 		imgs
+// 	];
+// })
 
 // grab('http://mangabz.com/803bz/', {
 // 	name: '../无能的奈奈',
