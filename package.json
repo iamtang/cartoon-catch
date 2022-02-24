@@ -4,12 +4,13 @@
   "description": "cartoon-catch",
   "main": "lib/main.js",
   "dependencies": {
-    "progress": "2.0.3",
-    "download": "^8.0.0",
-    "node-fetch": "^2.6.1",
-    "iconv-lite": "0.6.3",
+    "cartoon-catch": "^2.1.7",
     "cheerio": "1.0.0-rc.10",
-    "debug": "4.3.2"
+    "debug": "4.3.2",
+    "download": "^8.0.0",
+    "iconv-lite": "0.6.3",
+    "node-fetch": "^2.6.1",
+    "progress": "2.0.3"
   },
   "repository": {
     "type": "git",
