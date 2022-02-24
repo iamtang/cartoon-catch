@@ -14,15 +14,28 @@ def download(urls, options, title):
     threads_num = options.get('threads_num', 5)
     tq = tqdm(range(len(urls)))
     tq.set_description(options['name'] + title)
-    while len(urls) > 0:
-        threads_num = threads_num if threads_num < len(urls) else len(urls)
-        for i in range(0, threads_num):
-            img = urls.pop(0)
-            t = threading.Thread(target=url_response, args=(img,))
-            t.start()
-            tq.update(1)
-    
+    it = iter(urls)
+    while True:
+        try:
+            for i in range(0, threads_num):
+                img = next(it)
+                t = threading.Thread(target=url_response, args=(img,))
+                t.start()
+                tq.update(1)
+        except StopIteration:
+            break
+        
         t.join()
+
+    # while len(urls) > 0:
+    #     threads_num = threads_num if threads_num < len(urls) else len(urls)
+    #     for i in range(0, threads_num):
+    #         img = urls.pop(0)
+    #         t = threading.Thread(target=url_response, args=(img,))
+    #         t.start()
+    #         tq.update(1)
+    
+    #     t.join()
    
         
     
