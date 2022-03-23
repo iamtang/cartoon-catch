@@ -6,7 +6,7 @@ import threading
 lock = threading.Lock()
 
 def url_response(url,tq):
-    myfile = requests.get(url['src'], headers={"user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1"})
+    myfile = requests.get(url['src'], headers={"user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.3 Mobile/15E148 Safari/604.1", "Referer": "http://mangabz.com/"})
     creatDir(url['path'])
     open(url['path'] + url['fileName'], 'wb').write(myfile.content)
     tq.update(1)
