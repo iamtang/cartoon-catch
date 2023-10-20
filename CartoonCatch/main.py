@@ -11,7 +11,7 @@ class CartoonCatch:
         self.options = options
 
     def getTemp(self, url):
-        return pq(url, encoding='utf-8', headers=self.options.get('headers', defalutHeaders))
+        return pq(url=url, encoding='utf-8', headers=self.options.get('headers', defalutHeaders))
 
     def download(self):
         doc = self.getTemp(self.url)
